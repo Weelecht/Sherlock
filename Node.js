@@ -4,12 +4,12 @@ class Node {
         
         this.transaction = _transaction; 
         this.position = _position;
-        this.size; 
+        this.size = map(this.transaction.value,0,300,5,300); 
 
     }
 
     render(_originAddress) {
-        const sizeMapping = map(this.transaction.value,0,300,5,300);
+
         let c;
         
         if(this.transaction.to.toLowerCase() == _originAddress.toLowerCase()) {
@@ -21,7 +21,7 @@ class Node {
         push();
             fill(c);
             stroke(255,100);
-            circle(this.position.x,this.position.y, sizeMapping);
+            circle(this.position.x,this.position.y, this.size);
                 push();
                     stroke(c,30);
                     line(globalTranslation.x,globalTranslation.y,this.position.x,this.position.y);

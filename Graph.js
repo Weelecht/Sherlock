@@ -7,9 +7,17 @@ class Graph {
 
         this.address;
         this.entryNumber = 1000;
+        this.sizeMappingMaximum = 300;
         this.transactionsLoaded = false;
+        this.initSliderLock = false;
         this.transactions = []
         this.infoWindowBuffer = [];
+
+        this.transactionAmountSlider;
+        this.transcationSizeFilter;
+
+
+
         this.etherscanAddressURLBase = "https://etherscan.io/address/";
         this.etherscanHashURLBase = "https://etherscan.io/tx/";
 
@@ -64,12 +72,25 @@ class Graph {
 
     render() {
 
-        push();
+        if(this.transactionsLoaded = true) {
+
+            if(this.transactionsLoaded == true && this.initSliderLock == false) {
+                this.initializeSliders();
+                this.initSliderLock = true;
+                return;
+            }
+
+            push();
             this.renderOrigin();
             this.renderNodes();
             this.renderInfoWindows();
+            this.renderSliderTags();
+            console.log(this.transcationSizeFilter.value());
         pop();
 
+    
+        }
+    
     }
 
     renderOrigin() {
@@ -87,12 +108,17 @@ class Graph {
 
     renderNodes() {
 
-        for(let i = 0; i < this.transactions.length; i++) {
+        for(let i = 0; i < this.transactionAmountSlider.value(); i++) {
             const n = this.transactions[i];
             push();
+
+            if(this.transcationSizeFilter.value() <= n.size) {
                 n.render(this.address);
                 fill(255);
                 text(i,n.position.x,n.position.y - 10)
+            }
+               
+               
             pop();
         }
         
@@ -120,7 +146,7 @@ class Graph {
             const nodes = this.transactions[i];
 
             const distance = dist(mouseLoc.x,mouseLoc.y, nodes.position.x + _offSet.x,nodes.position.y + _offSet.y);
-            const sizeMapping = map(nodes.transaction.value,0,300,5,300);
+            const sizeMapping = map(nodes.transaction.value,0,300,5,this.sizeMappingMaximum);
         
             if(distance < sizeMapping) {
 
@@ -162,8 +188,6 @@ class Graph {
             const activeInfoWindow = this.infoWindowBuffer[0];
 
             const panels = activeInfoWindow.panels;
-            // console.log(activeInfoWindow);
-            // console.log(panels);
 
                 for(let i = 0; i < panels.length; i++) {
                     const p = panels[i];
@@ -174,6 +198,34 @@ class Graph {
                     }
                      
                 }
+        } else {
+            return
         }
     }
+
+    initializeSliders() {
+        const transactionLength = this.transactions.length;
+
+        this.transactionAmountSlider = createSlider(0,transactionLength,transactionLength);
+        this.transactionAmountSlider.position(sidebarMargin,input.height*3);
+          
+        this.transcationSizeFilter = createSlider(0,this.sizeMappingMaximum,0,0.01);
+        this.transcationSizeFilter.position(sidebarMargin, input.height*6);
+    
+    } 
+
+    
+     renderSliderTags() {
+        push();
+            fill(255);
+            text(`Amount of transactions: ${this.transactionAmountSlider.value()}`,sidebarMargin,input.height * 3);
+        pop();
+    
+        push();
+        fill(255);
+        text(`Filtering by >= size of transactions: ${this.transcationSizeFilter.value()}`,sidebarMargin, input.height*6)
+        pop();
+  }
+
+ 
 }

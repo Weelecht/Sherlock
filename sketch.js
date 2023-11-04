@@ -7,6 +7,7 @@ let transcationSizeFilter;
 
 let globalTranslation;
 let zoomScale = 1;
+const sidebarMargin = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -18,18 +19,13 @@ function setup() {
   button.position(input.width+10,10);
   button.mousePressed(handleSubmission);
   
-  transactionAmountSlider = createSlider();
-  transcationSizeFilter = createSlider();
-  dasdsa
-
-
-
   globalTranslation = createVector(width/2,height/2);
   graph = new Graph();
 }
 
 function draw() {
   background(30);
+
   // circle(width/2,height/2,10000);
   if(graph.transactionsLoaded == true) {  
     push(); 
@@ -40,8 +36,6 @@ function draw() {
 
     pop();
   }
-
-
 }
 
 function handleSubmission() {
@@ -51,7 +45,7 @@ function handleSubmission() {
   } else {
     //check if there is already a graph active
     if(graph.transactionsLoaded == true) {
-      window.alert(`There is already a graph loaded at address: ${graph.createShortHand(graph.address)}`)
+      window.alert(`There is already a graph loaded at address: ${graph.createShortHand(graph.address)}`);
       return;
     }
 
@@ -65,17 +59,6 @@ function handleSubmission() {
 
 }
 
-//Moved controller.js code out into the app file
-
-// function mouseDragged(e) {
-//    globalTranslation.x += e.movementX;
-//    globalTranslation.y += e.movementY;
-// }
-
-// function mouseWheel(e) {
-//   zoomScale -= e.delta/1000;
-// } 
-
 function mousePressed() {
  
   if(graph.transactionsLoaded == true) {
@@ -86,3 +69,16 @@ function mousePressed() {
   }
 
 }
+
+
+
+//Moved controller.js code out into the app file
+
+// function mouseDragged(e) {
+//    globalTranslation.x += e.movementX;
+//    globalTranslation.y += e.movementY;
+// }
+
+// function mouseWheel(e) {
+//   zoomScale -= e.delta/1000;
+// } 
