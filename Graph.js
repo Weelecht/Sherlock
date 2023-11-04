@@ -1,3 +1,8 @@
+you should add: 
+- scale so you can scroll when things are cut off
+- sort by most recent transactions
+- sort by smallest transactions
+    
 const ETHERSCAN_API = "KWX82VSSWWB9IYSS4QPSBKACMU5MQHVJFR";
 const provider = new ethers.providers.WebSocketProvider("wss://eth-mainnet.g.alchemy.com/v2/0o__XlLs-0iVYrPeLCk1cbD9D4_5oNZu");
 
